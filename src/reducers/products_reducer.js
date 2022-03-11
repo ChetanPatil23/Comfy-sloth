@@ -10,6 +10,7 @@ import {
 } from "../actions";
 
 const products_reducer = (state, action) => {
+  console.log(action);
   switch (action.type) {
     case SIDEBAR_OPEN:
       return { ...state, isSidebarOpen: true };
@@ -17,6 +18,28 @@ const products_reducer = (state, action) => {
     case SIDEBAR_CLOSE:
       return { ...state, isSidebarOpen: false };
       break;
+    case GET_PRODUCTS_BEGIN:
+      return {...state,products_loading: true}
+      break;
+    case GET_PRODUCTS_SUCCESS:
+      const featuredProducts=action.payload.filter((item)=>item.featured===true);
+      return {...state,products_loading: false,products:action.payload,featured_products:featuredProducts}
+      break;
+    case GET_PRODUCTS_ERROR:
+      return {...state,products_loading: false,products_error:true}
+      break;
+
+      case GET_SINGLE_PRODUCT_BEGIN:
+      return {...state,single_product_loading: true}
+      break;
+    case GET_SINGLE_PRODUCT_SUCCESS:
+      return {...state,single_product_loading: false,single_product:action.payload}
+      break;
+    case GET_SINGLE_PRODUCT_ERROR:
+      return {...state,single_product_loading: false,single_product_error:true}
+      break;
+
+
     default:
       return state;
       break;
